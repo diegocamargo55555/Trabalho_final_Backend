@@ -1,3 +1,8 @@
-const disciplina : string = "Programação Orienta a Objetos III";
+import mangasRouter from "@modules/mangas/routes/mangas.routes";
+import { Router } from "express";
 
-console.log(disciplina)
+const routes = Router();
+routes.use('/products', mangasRouter);
+routes.get('/', (request, response) =>{
+    return response.json({message: 'Hello Dev!'});
+})
