@@ -1,5 +1,5 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
+import { getCustomRepository, Timestamp } from "typeorm";
 import Manga from "../typeorm/entities/Manga";
 import MangasRepository from "../typeorm/repositories/MangasRepository";
 
@@ -10,7 +10,7 @@ interface IRequest{
     author: string;
     description: string;
     gender: string;
-    release_date:string
+    release_date:Timestamp
 }
 
 export default class UpdateMangaService{
@@ -28,6 +28,10 @@ export default class UpdateMangaService{
         }
         manga.name = name;
         manga.capitulos = capitulos;
+        manga.author = author
+        manga.description = description
+        manga.gender = gender
+        manga.release_date = release_date
 
         await mangasRepository.save(manga);
 

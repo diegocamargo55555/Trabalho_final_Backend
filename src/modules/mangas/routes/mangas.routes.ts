@@ -6,6 +6,7 @@ const mangasController = new MangasController(); // instanciando a classe
 
 mangasRouter.get('/', async (req, res, next) => {
   try {
+    console.log("test1")
     await mangasController.index(req, res, next);
   } catch (err) {
     next(err);
