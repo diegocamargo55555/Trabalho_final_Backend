@@ -5,9 +5,9 @@ import Capitulo from "../entities/Capitulo";
 export default class CapitulosRepository extends Repository<Capitulo> {
 
     //esse método retorna uma promessa
-    public async findByName(name: string): Promise<Capitulo | undefined> {
+    public async findByTitle(title: string): Promise<Capitulo | undefined> {
         const Capitulo = this.findOne({
-            where: { name }
+            where: { title }
         })
         return Capitulo;
     }

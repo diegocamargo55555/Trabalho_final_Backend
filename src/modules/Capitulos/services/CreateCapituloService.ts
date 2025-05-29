@@ -1,7 +1,7 @@
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Manga from "../typeorm/entities/Capitulo";
-import MangasRepository from "../typeorm/repositories/CapitulosRepository";
+import CapituloRepository from "../typeorm/repositories/CapitulosRepository";
 
 
 interface IRequest {
@@ -14,17 +14,18 @@ interface IRequest {
 export default class CreateCapituloService {
 
     public async execute({ title, pages_url, pages_total, release_date }: IRequest): Promise<Manga> {
-        const mangasRepository = getCustomRepository(MangasRepository);
+        const capituloRepository = getCustomRepository(CapituloRepository);
 
-        const mangaExists = await mangasRepository.findByName(title);
+        const mangaExists = await capituloRepository.findByTitle(title);
         if (mangaExists) {
             throw new AppError('There is already one manga with this name.');
         }
+            console.log("f")
 
-        const manga = mangasRepository.create({
+        const manga = capituloRepository.create({
             title, pages_url, pages_total, release_date
         });
-        await mangasRepository.save(manga);
+        await capituloRepository.save(manga);
         return manga;
     }
 }

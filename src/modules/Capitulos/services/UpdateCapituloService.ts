@@ -21,7 +21,7 @@ export default class UpdateCapituloService{
             throw new AppError('capitulo not found.');
         }
         //verificar se o novo nome do produto tbm já não exite e que não é o mesmo
-        const capituloExists = await capitulosRepository.findByName(title);
+        const capituloExists = await capitulosRepository.findByTitle(title);
         if(capituloExists && title != capitulo.title){
             throw new AppError('There is already one capitulo with this title.');
         }
