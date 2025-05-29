@@ -1,10 +1,10 @@
 import { getCustomRepository } from "typeorm";
-import Product from "../typeorm/entities/Manga";
+import Manga from "../typeorm/entities/Manga";
 import MangasRepository from "../typeorm/repositories/MangasRepository";
 
-export default class ListProductService{
+export default class ListMangaService{
 
-    public async execute() : Promise<Product[]>{
+    public async execute() : Promise<Manga[]>{
         const mangaRepository = getCustomRepository(MangasRepository);
         const mangas = await mangaRepository.find();
         return mangas;
