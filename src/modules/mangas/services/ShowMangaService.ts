@@ -10,7 +10,7 @@ interface IRequest {
 export default class ShowMangaService {
     public async execute({ id }: IRequest): Promise<Manga> {
         const mangaRepository = getCustomRepository(MangasRepository);
-        const manga = await mangaRepository.findOne(id);
+        const manga = await mangaRepository.findById(id);
         if (!manga) {
             throw new AppError('manga not found.');
         }

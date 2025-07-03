@@ -2,6 +2,7 @@ import AppError from "@shared/errors/AppError";
 import { getCustomRepository, Timestamp } from "typeorm";
 import Capitulo from "../typeorm/entities/Capitulo";
 import CapitulosRepository from "../typeorm/repositories/CapitulosRepository";
+import MangasRepository from "@modules/mangas/typeorm/repositories/MangasRepository";
 
 interface IRequest {
     id: string
@@ -9,29 +10,39 @@ interface IRequest {
     pages_url: string;
     pages_total: number;
     release_date: Timestamp;
+    manga_id: string
+
 }
 
 
-export default class UpdateCapituloService{
+export default class UpdateCapituloService {
 
-    public async execute({id, title, pages_url, pages_total, release_date}: IRequest) : Promise<Capitulo>{
+    public async execute({ id, title, pages_url, pages_total, release_date, manga_id }: IRequest): Promise<Capitulo> {
         const capitulosRepository = getCustomRepository(CapitulosRepository);
-        const capitulo = await capitulosRepository.findOne(id);
-        if(!capitulo){
+        const capitulo = await capitulosRepository.findById(id);
+        const mangaRepository = getCustomRepository(MangasRepository);
+
+
+        if (!capitulo) {
             throw new AppError('capitulo not found.');
         }
-        //verificar se o novo nome do produto tbm já não exite e que não é o mesmo
         const capituloExists = await capitulosRepository.findByTitle(title);
-        if(capituloExists && title != capitulo.title){
+        if (capituloExists && title != capitulo.title) {
             throw new AppError('There is already one capitulo with this title.');
         }
+
+        const mangaExists = await mangaRepository.findOne(manga_id);
+        if (!mangaExists) {
+            throw new AppError('Could not find any manga with the given ids.');
+        }
+
         capitulo.title = title
         capitulo.pages_url = pages_url
         capitulo.pages_total = pages_total
         capitulo.release_date = release_date
+        capitulo.manga = mangaExists
 
         await capitulosRepository.save(capitulo);
-
         return capitulo;
     }
 }

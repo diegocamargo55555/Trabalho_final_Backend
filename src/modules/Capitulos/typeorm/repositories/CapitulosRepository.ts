@@ -11,4 +11,12 @@ export default class CapitulosRepository extends Repository<Capitulo> {
         })
         return Capitulo;
     }
+
+    public async findById(id: string): Promise<Capitulo | undefined> {
+        const capitulo = await this.findOne(id, {
+            relations: ['manga']
+        });
+        return capitulo;
+    }
+
 }

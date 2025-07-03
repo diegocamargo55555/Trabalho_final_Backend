@@ -30,9 +30,9 @@ export default class CapitulosController {
 
     public async create(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try { //            title, pages_url, pages_total, release_date
-            const { title, pages_url, pages_total, release_date } = request.body;
+            const { manga_id, title, pages_url, pages_total, release_date } = request.body;
             const createCapitulo = new CreateCapituloService();
-            const capitulo = await createCapitulo.execute({ title, pages_url, pages_total, release_date });
+            const capitulo = await createCapitulo.execute({ manga_id, title, pages_url, pages_total, release_date });
             console.log("fff")
 
             return response.json(capitulo);
@@ -43,10 +43,10 @@ export default class CapitulosController {
 
     public async update(request: Request, response: Response, next: NextFunction): Promise<Response | void> {
         try {
-            const { title, pages_url, pages_total, release_date } = request.body;
+            const { title, pages_url, pages_total, release_date, manga_id } = request.body;
             const { id } = request.params;
             const updateCapitulo = new UpdateCapituloService();
-            const capitulo = await updateCapitulo.execute({ id, title, pages_url, pages_total, release_date });
+            const capitulo = await updateCapitulo.execute({ id, title, pages_url, pages_total, release_date, manga_id });
             return response.json(capitulo);
         } catch (err) {
             next(err);

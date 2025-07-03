@@ -11,4 +11,14 @@ export default class MangasRepository extends Repository<Manga> {
         })
         return manga;
     }
+
+
+    public async findById(id: string): Promise<Manga | undefined> {
+        const manga = await this.findOne(id, {
+        relations: ['charpters']});
+        return manga;
+    }
+
 }
+
+

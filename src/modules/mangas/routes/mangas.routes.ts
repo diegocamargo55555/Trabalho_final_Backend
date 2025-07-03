@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import MangasController from '../controllers/MangasController';
 import { celebrate, Joi, Segments } from 'celebrate';
+import isAuthenticated from '@shared/http/middlewares/isAuthenticated';
 
 const mangasRouter = Router();
 const mangasController = new MangasController(); // instanciando a classe
 
-mangasRouter.get('/', async (req, res, next) => {
+mangasRouter.get('/',isAuthenticated,  async (req, res, next) => {
   try {
     await mangasController.index(req, res, next);
   } catch (err) {
@@ -13,7 +14,7 @@ mangasRouter.get('/', async (req, res, next) => {
   }
 });
 
-mangasRouter.get('/:id', celebrate({
+mangasRouter.get('/:id', isAuthenticated, celebrate({
   [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
   async (req, res, next) => {
@@ -24,7 +25,7 @@ mangasRouter.get('/:id', celebrate({
     }
   });
 
-mangasRouter.post('/', celebrate({
+mangasRouter.post('/',isAuthenticated ,celebrate({
   [Segments.BODY]: {
     name: Joi.string().required(),
     capitulos: Joi.number().required(),
@@ -42,7 +43,7 @@ mangasRouter.post('/', celebrate({
     }
   });
 
-mangasRouter.put('/:id', celebrate({
+mangasRouter.put('/:id',isAuthenticated ,celebrate({
   [Segments.PARAMS]: { id: Joi.string().uuid().required() },
   [Segments.BODY]: {
     name: Joi.string().required(),
@@ -61,7 +62,7 @@ mangasRouter.put('/:id', celebrate({
     }
   });
 
-mangasRouter.delete('/:id', celebrate({
+mangasRouter.delete('/:id',isAuthenticated ,celebrate({
   [Segments.PARAMS]: { id: Joi.string().uuid().required() }
 }),
   async (req, res, next) => {

@@ -10,10 +10,11 @@ interface IRequest {
 export default class ShowCapitloService {
     public async execute({ id }: IRequest): Promise<Capitulo> {
         const CapituloRepository = getCustomRepository(CapitulosRepository);
-        const Capitulo = await CapituloRepository.findOne(id);
+        const Capitulo = await CapituloRepository.findById(id);
         if (!Capitulo) {
             throw new AppError('Capitulo not found.');
         }
+        
         return Capitulo;
     }
 }

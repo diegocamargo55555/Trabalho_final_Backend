@@ -1,9 +1,15 @@
 import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Timestamp, UpdateDateColumn } from 'typeorm';
+import Capitulo from "@modules/Capitulos/typeorm/entities/Capitulo";
 
 @Entity('mangas')
-export default class Product {
+export default class Manga {
     @PrimaryGeneratedColumn('uuid')
-    id: string;
+    id: string;         
+
+    @OneToMany(() => Capitulo, (capitulo) => capitulo.manga, {
+        cascade: true
+    })
+    charpters: Capitulo[];
 
     @Column()
     name: string;
